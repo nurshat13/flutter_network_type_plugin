@@ -1,6 +1,6 @@
-name: network_type_plugin
+name: flutter_network_type_plugin
 description: A Flutter plugin to determine network type and speed.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/nurshat13/flutter_network_type_plugin
 
 environment:

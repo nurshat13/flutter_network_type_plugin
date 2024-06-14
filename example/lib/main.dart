@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:network_type_plugin/network_type_plugin.dart';
+import 'package:flutter_network_type_plugin/network_type_plugin.dart';
 
 void main() {
   runApp(MyApp());

@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import XCTest
 
-@testable import network_type_plugin
+@testable import flutter_network_type_plugin
 
 // This demonstrates a simple unit test of the Swift portion of this plugin's implementation.
 //

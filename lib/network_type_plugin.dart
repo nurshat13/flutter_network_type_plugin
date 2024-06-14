@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 
 class FlutterNetworkTypePlugin {
-  static const MethodChannel _channel = MethodChannel('network_type_plugin');
+  static const MethodChannel _channel = MethodChannel('flutter_network_type_plugin');
 
   static Future<String> getNetworkType({
     String? url,

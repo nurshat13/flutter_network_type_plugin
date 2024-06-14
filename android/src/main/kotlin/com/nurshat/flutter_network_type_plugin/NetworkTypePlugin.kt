@@ -25,7 +25,7 @@ class NetworkTypePlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPluginBinding) {
     context = flutterPluginBinding.applicationContext
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "network_type_plugin")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_network_type_plugin")
     channel.setMethodCallHandler(this)
   }
 

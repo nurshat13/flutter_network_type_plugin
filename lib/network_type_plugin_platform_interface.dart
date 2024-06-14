@@ -1,4 +1,4 @@
-import 'package:network_type_plugin/network_type_plugin_method_channel.dart';
+import 'package:flutter_network_type_plugin/network_type_plugin_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 abstract class NetworkTypePluginPlatform extends PlatformInterface {

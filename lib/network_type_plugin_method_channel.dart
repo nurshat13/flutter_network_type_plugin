@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'network_type_plugin_platform_interface.dart';
 
 class MethodChannelNetworkTypePlugin extends NetworkTypePluginPlatform {
-  static const MethodChannel _channel = MethodChannel('network_type_plugin');
+  static const MethodChannel _channel = MethodChannel('flutter_network_type_plugin');
 
   @override
   Future<String> getNetworkType({

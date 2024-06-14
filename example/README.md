@@ -1,6 +1,6 @@
 # network_type_plugin_example
 
-Demonstrates how to use the network_type_plugin plugin.
+Demonstrates how to use the flutter_network_type_plugin plugin.
 
 ## Getting Started
 

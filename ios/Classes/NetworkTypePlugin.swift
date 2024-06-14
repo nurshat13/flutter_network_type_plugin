@@ -10,7 +10,7 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
     private let defaultTimeout: TimeInterval = 5.0
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "network_type_plugin", binaryMessenger: registrar.messenger())
+        let channel = FlutterMethodChannel(name: "flutter_network_type_plugin", binaryMessenger: registrar.messenger())
         let instance = NetworkTypePlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
