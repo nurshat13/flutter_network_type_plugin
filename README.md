@@ -1,8 +1,8 @@
 # Flutter Network Type Plugin
 
 [![Pub Version](https://img.shields.io/pub/v/flutter_network_type_plugin)](https://pub.dev/packages/flutter_network_type_plugin)
-[![GitHub license](https://img.shields.io/github/license/yourusername/flutter_network_type_plugin)](https://github.com/yourusername/flutter_network_type_plugin/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/flutter_network_type_plugin)](https://github.com/yourusername/flutter_network_type_plugin/stargazers)
+[![GitHub license](https://img.shields.io/github/license/yourusername/flutter_network_type_plugin)](https://github.com/nurshat13/flutter_network_type_plugin/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/yourusername/flutter_network_type_plugin)](https://github.com/nurshat13/flutter_network_type_plugin/stargazers)
 
 A Flutter plugin to determine the network type and measure network speed.
 
