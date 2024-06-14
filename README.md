@@ -20,13 +20,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_network_type_plugin: ^0.0.1
-Then run flutter pub get to install the package.
+```
+### Then run flutter pub get to install the package.
 
-Usage
+## Usage
 
-Example
-dart
-Copy code
+### Example
+
+```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_network_type_plugin/flutter_network_type_plugin.dart';
 
@@ -96,7 +97,8 @@ class _NetworkCheckState extends State<NetworkCheck> {
     );
   }
 }
-API
+```
+### API
 Future<String> getNetworkType({String? url, double? speedThreshold, int? maxRetries, double? retryDelay, double? timeout})
 
 Fetches the network type. Optionally, you can provide a URL to test the speed and a speed threshold to confirm the network type.
@@ -106,7 +108,7 @@ speedThreshold (double, optional): The speed threshold in Mbps to confirm the ne
 maxRetries (int, optional): The maximum number of retries for the speed test. Default is 0.
 retryDelay (double, optional): The delay between retries in seconds. Default is 1.0.
 timeout (double, optional): The timeout for the speed test in seconds. Default is 5.0.
-Testing
+### Testing
 Run the tests to ensure everything is working correctly:
 
 flutter test
@@ -114,13 +116,13 @@ flutter drive --target=test_driver/app.dart
 Contributing
 Contributions are welcome! Please see CONTRIBUTING.md for details.
 
-License
+### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Support
+### Support
 If you encounter any issues or have questions, feel free to open an issue on GitHub.
 
-Author
+### Author
 Developed by Nurshat - nurshat170@gmail.com
 
-Happy coding!
+## Happy coding!
