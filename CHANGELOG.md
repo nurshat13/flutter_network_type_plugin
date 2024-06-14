@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.3] - 2024-06-07
+## [0.0.4] - 2024-06-14
+
+### Fixed
+- fix the `androidPackage` entry.
+
+## [0.0.3] - 2024-06-14
 
 ### Changed
 - Update of Changelog.
 
-
-## [0.0.2] - 2024-06-07
+## [0.0.2] - 2024-06-14
 
 ### Added
 - Support for custom URL and speed threshold for network speed measurement.
@@ -28,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed issue with incorrect network type detection on some devices.
 - Fixed minor bugs in the example app.
 
-## [0.0.1] - 2024-06-07
+## [0.0.1] - 2024-06-14
 
 ### Added
 - Initial release of `flutter_network_type_plugin`.

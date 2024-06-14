@@ -1,4 +1,4 @@
-com.nurshat.flutter_network_type_plugin
+package com.nurshat.flutter_network_type_plugin
 
 import android.content.Context
 import android.net.ConnectivityManager
