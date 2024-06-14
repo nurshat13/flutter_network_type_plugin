@@ -109,8 +109,6 @@ timeout (double, optional): The timeout for the speed test in seconds. Default i
 Testing
 Run the tests to ensure everything is working correctly:
 
-sh
-Copy code
 flutter test
 flutter drive --target=test_driver/app.dart
 Contributing
@@ -120,10 +118,9 @@ License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 Support
-
 If you encounter any issues or have questions, feel free to open an issue on GitHub.
 
 Author
-Developed by Your Name - Your Website
+Developed by Nurshat - nurshat170@gmail.com
 
 Happy coding!
