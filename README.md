@@ -19,7 +19,7 @@ Add `flutter_network_type_plugin` as a dependency in your `pubspec.yaml` file:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_network_type_plugin: ^0.0.1
+  flutter_network_type_plugin: ^0.2.1
 ```
 ### Then run flutter pub get to install the package.
 
