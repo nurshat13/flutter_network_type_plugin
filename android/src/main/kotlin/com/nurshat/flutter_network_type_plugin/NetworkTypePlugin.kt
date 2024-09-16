@@ -142,7 +142,9 @@ class NetworkTypePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     channel.setMethodCallHandler(null)
   }
 
-  override fun onAttachedToActivity(binding: ActivityPluginBinding) {}
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    context = binding.activity
+  }
   override fun onDetachedFromActivityForConfigChanges() {}
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {}
   override fun onDetachedFromActivity() {}
