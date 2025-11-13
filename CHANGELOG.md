@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.3] - 2025-11-13
 
 ### Changed
-- Release version 0.2.3.
+- Set namespace for Android library in build.gradle
 
 ## [0.2.2] - 2024-09-19
 
