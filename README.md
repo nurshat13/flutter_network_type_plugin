@@ -8,7 +8,7 @@ A Flutter plugin to determine the network type and measure network speed.
 
 ## Features
 
-- Detects the network type: **WiFi**, **5G**, **4G/4G+**, **3G**, **2G**, or **No Internet**
+- Detects the network type: **WiFi**, **5G**, **4G**, **3G**, **2G**, or **No Internet**
 - **WiFi detection** on both iOS and Android
 - **5G network support** with immediate detection
 - **Optional speed testing** - only runs when both `url` and `speedThreshold` are provided
@@ -23,7 +23,7 @@ Add `flutter_network_type_plugin` as a dependency in your `pubspec.yaml` file:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_network_type_plugin: ^0.2.1
+  flutter_network_type_plugin: ^0.2.5
 ```
 ### Then run flutter pub get to install the package.
 
@@ -136,7 +136,6 @@ Fetches the network type. Speed testing is **optional** and only runs when both 
 | `"WiFi"` | Connected via WiFi |
 | `"WiFi (Slow)"` | Connected via WiFi but below speed threshold |
 | `"5G"` | Connected via 5G cellular |
-| `"4G+"` | Connected via LTE-Advanced (Android only) |
 | `"4G"` | Connected via LTE/4G cellular |
 | `"3G"` | Connected via 3G cellular |
 | `"3G or less"` | 4G detected but speed below threshold |

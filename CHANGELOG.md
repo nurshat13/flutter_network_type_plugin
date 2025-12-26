@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.5] - 2024-12-26
+
+### Fixed
+- Removed invalid `NETWORK_TYPE_LTE_CA` constant that caused build failures on Android
+
 ## [0.2.4] - 2024-12-26
 
 ### Added
 - WiFi detection support for iOS using `SCNetworkReachabilityFlags.isWWAN`
 - WiFi speed check with "WiFi" or "WiFi (Slow)" results based on threshold
 - 5G network detection improvements (returns immediately without speed check)
-- LTE-A (4G+) detection on Android
 - Network priority selection for dual-SIM devices (selects best available network)
 
 ### Changed

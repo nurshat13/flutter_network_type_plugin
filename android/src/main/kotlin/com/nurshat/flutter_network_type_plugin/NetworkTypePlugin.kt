@@ -98,7 +98,6 @@ class NetworkTypePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       when (networkType) {
         TelephonyManager.NETWORK_TYPE_NR -> "5G"
         TelephonyManager.NETWORK_TYPE_LTE -> "4G"
-        TelephonyManager.NETWORK_TYPE_LTE_CA -> "4G+" // LTE Advanced
         TelephonyManager.NETWORK_TYPE_HSPAP, TelephonyManager.NETWORK_TYPE_EHRPD,
         TelephonyManager.NETWORK_TYPE_EVDO_B, TelephonyManager.NETWORK_TYPE_HSPA,
         TelephonyManager.NETWORK_TYPE_HSDPA, TelephonyManager.NETWORK_TYPE_HSUPA,
