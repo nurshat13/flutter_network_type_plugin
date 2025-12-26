@@ -8,8 +8,12 @@ A Flutter plugin to determine the network type and measure network speed.
 
 ## Features
 
-- Detects the network type (e.g., 4G, 3G, 2G).
-- Measures network speed and confirms if the network type is correctly detected.
+- Detects the network type: **WiFi**, **5G**, **4G/4G+**, **3G**, **2G**, or **No Internet**
+- **WiFi detection** on both iOS and Android
+- **5G network support** with immediate detection
+- **Optional speed testing** - only runs when both `url` and `speedThreshold` are provided
+- Measures network speed and confirms if the network type is correctly detected
+- Returns "WiFi (Slow)" or "3G or less" when speed is below threshold
 
 ## Installation
 
@@ -63,10 +67,14 @@ class _NetworkCheckState extends State<NetworkCheck> {
   Future<void> _getNetworkType() async {
     String networkType;
     try {
-      networkType = await FlutterNetworkTypePlugin.getNetworkType(
-        url: 'https://www.google.com', // User-defined URL
-        speedThreshold: 5.0, // User-defined speed threshold in Mbps
-      );
+      // Simple usage - just get the network type (WiFi, 5G, 4G, 3G, 2G)
+      networkType = await FlutterNetworkTypePlugin.getNetworkType();
+      
+      // Or with speed verification (optional)
+      // networkType = await FlutterNetworkTypePlugin.getNetworkType(
+      //   url: 'https://www.google.com', // URL for speed test
+      //   speedThreshold: 5.0, // Speed threshold in Mbps
+      // );
     } on PlatformException catch (e) {
       networkType = "Failed to get network type: '${e.message}'.";
     }
@@ -99,15 +107,43 @@ class _NetworkCheckState extends State<NetworkCheck> {
 }
 ```
 ### API
-Future<String> getNetworkType({String? url, double? speedThreshold, int? maxRetries, double? retryDelay, double? timeout})
+```dart
+Future<String> getNetworkType({
+  String? url,
+  double? speedThreshold,
+  int? maxRetries,
+  double? retryDelay,
+  double? timeout,
+})
+```
 
-Fetches the network type. Optionally, you can provide a URL to test the speed and a speed threshold to confirm the network type.
+Fetches the network type. Speed testing is **optional** and only runs when both `url` and `speedThreshold` are provided.
 
-url (String, optional): The URL to use for the speed test.
-speedThreshold (double, optional): The speed threshold in Mbps to confirm the network type.
-maxRetries (int, optional): The maximum number of retries for the speed test. Default is 0.
-retryDelay (double, optional): The delay between retries in seconds. Default is 1.0.
-timeout (double, optional): The timeout for the speed test in seconds. Default is 5.0.
+#### Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `url` | `String?` | `null` | The URL to use for the speed test. Required for speed verification. |
+| `speedThreshold` | `double?` | `null` | The speed threshold in Mbps. Required for speed verification. |
+| `maxRetries` | `int?` | `0` | Maximum number of retries for network detection. |
+| `retryDelay` | `double?` | `1.0` | Delay between retries in seconds. |
+| `timeout` | `double?` | `5.0` | Timeout for the speed test in seconds. |
+
+#### Return Values
+
+| Value | Description |
+|-------|-------------|
+| `"WiFi"` | Connected via WiFi |
+| `"WiFi (Slow)"` | Connected via WiFi but below speed threshold |
+| `"5G"` | Connected via 5G cellular |
+| `"4G+"` | Connected via LTE-Advanced (Android only) |
+| `"4G"` | Connected via LTE/4G cellular |
+| `"3G"` | Connected via 3G cellular |
+| `"3G or less"` | 4G detected but speed below threshold |
+| `"2G"` | Connected via 2G cellular |
+| `"NO INTERNET"` | No network connection |
+| `"Unknown"` | Unable to determine network type |
+| `"Permission required"` | Android: READ_PHONE_STATE permission needed |
 ### Testing
 Run the tests to ensure everything is working correctly:
 

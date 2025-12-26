@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.4] - 2024-12-26
+
+### Added
+- WiFi detection support for iOS using `SCNetworkReachabilityFlags.isWWAN`
+- WiFi speed check with "WiFi" or "WiFi (Slow)" results based on threshold
+- 5G network detection improvements (returns immediately without speed check)
+- LTE-A (4G+) detection on Android
+- Network priority selection for dual-SIM devices (selects best available network)
+
+### Changed
+- Made `speedThreshold` truly optional - speed check only runs when both `url` AND `speedThreshold` are provided
+- Improved cellular network type detection with additional network types (UMTS, EVDO variants, IDEN)
+- Cleaner return values (removed debug speed info from Android responses)
+- Better edge case handling for zero time intervals
+
+### Fixed
+- Fixed timeout cancellation in speed tests
+- Fixed 4G fallback logic when retries are exhausted
+
 ## [0.2.3] - 2025-11-13
 
 ### Changed
