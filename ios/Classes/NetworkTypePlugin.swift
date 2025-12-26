@@ -2,6 +2,7 @@ import Flutter
 import UIKit
 import CoreTelephony
 import SystemConfiguration
+import Network
 
 public class NetworkTypePlugin: NSObject, FlutterPlugin {
     private let networkInfo = CTTelephonyNetworkInfo()
@@ -31,6 +32,22 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
                 let retryDelay = args?["retryDelay"] as? TimeInterval ?? defaultRetryDelay
                 let timeout = args?["timeout"] as? TimeInterval ?? defaultTimeout
                 let url = urlStr != nil ? URL(string: urlStr!) : nil
+                
+                // Check if connected via WiFi (not cellular/WWAN)
+                if !flags.contains(.isWWAN) {
+                    // Connected via WiFi or other non-cellular network
+                    if let url = url, let speedThreshold = speedThreshold {
+                        // If speed test parameters provided, verify WiFi speed
+                        let timeoutWorkItem = DispatchWorkItem {
+                            result("WiFi")
+                        }
+                        DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: timeoutWorkItem)
+                        confirmWiFiSpeed(url: url, speedThreshold: speedThreshold, timeoutWorkItem: timeoutWorkItem, result: result)
+                    } else {
+                        result("WiFi")
+                    }
+                    return
+                }
 
                 let timeoutWorkItem = DispatchWorkItem {
                     result("3G or less") // Fallback if the process takes more than the specified timeout
@@ -48,15 +65,20 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
 
     private func determineNetworkType(retryCount: Int, confirmed4G: Bool, url: URL?, speedThreshold: Double?, maxRetries: Int, retryDelay: TimeInterval, timeoutWorkItem: DispatchWorkItem, result: @escaping FlutterResult) {
         var networkType = "Unknown"
+        var bestNetworkType = "Unknown"
 
         if #available(iOS 12.0, *) {
             if let radioAccessTechnologies = networkInfo.serviceCurrentRadioAccessTechnology {
                 for (_, radioAccessTechnology) in radioAccessTechnologies {
-                    networkType = getNetworkTypeString(radioAccessTechnology: radioAccessTechnology)
-                    if networkType != "Unknown" {
-                        break
+                    let currentType = getNetworkTypeString(radioAccessTechnology: radioAccessTechnology)
+                    // Keep track of the best network type found
+                    if currentType != "Unknown" {
+                        if bestNetworkType == "Unknown" || getNetworkPriority(currentType) > getNetworkPriority(bestNetworkType) {
+                            bestNetworkType = currentType
+                        }
                     }
                 }
+                networkType = bestNetworkType
             }
         } else {
             if let radioAccessTechnology = networkInfo.currentRadioAccessTechnology {
@@ -64,7 +86,15 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
             }
         }
 
+        // Handle 5G - return immediately without speed check
+        if networkType == "5G" {
+            timeoutWorkItem.cancel()
+            result("5G")
+            return
+        }
+
         if networkType == "4G" {
+            // Only perform speed check if both url and speedThreshold are provided
             if let url = url, let speedThreshold = speedThreshold {
                 if confirmed4G {
                     confirm4GSpeed(url: url, speedThreshold: speedThreshold, timeoutWorkItem: timeoutWorkItem, result: result)
@@ -73,11 +103,13 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
                         self.retryNetworkTypeCheck(retryCount: retryCount, confirmed4G: true, url: url, speedThreshold: speedThreshold, maxRetries: maxRetries, retryDelay: retryDelay, timeoutWorkItem: timeoutWorkItem, result: result)
                     }
                 } else {
-                    timeoutWorkItem.cancel()
-                    result("3G or less") // Fallback if confirmation failed after retries
+                    // No more retries, proceed with speed check
+                    confirm4GSpeed(url: url, speedThreshold: speedThreshold, timeoutWorkItem: timeoutWorkItem, result: result)
                 }
             } else {
-                result("4G") // Directly return 4G if URL and speedThreshold are not provided
+                // No speed check parameters provided, return 4G directly
+                timeoutWorkItem.cancel()
+                result("4G")
             }
         } else if retryCount < maxRetries && !confirmed4G {
             DispatchQueue.global().asyncAfter(deadline: .now() + retryDelay) {
@@ -89,6 +121,16 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
             }
             timeoutWorkItem.cancel()
             result(networkType)
+        }
+    }
+    
+    private func getNetworkPriority(_ networkType: String) -> Int {
+        switch networkType {
+        case "5G": return 5
+        case "4G": return 4
+        case "3G": return 3
+        case "2G": return 2
+        default: return 0
         }
     }
 
@@ -131,12 +173,13 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
         let startTime = Date()
 
         let speedTestTimeoutWorkItem = DispatchWorkItem {
+            timeoutWorkItem.cancel()
             result("3G or less")
         }
         DispatchQueue.global().asyncAfter(deadline: .now() + 5, execute: speedTestTimeoutWorkItem)
 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            defer { timeoutWorkItem.cancel() }
+            timeoutWorkItem.cancel()
             
             if speedTestTimeoutWorkItem.isCancelled {
                 return
@@ -151,12 +194,44 @@ public class NetworkTypePlugin: NSObject, FlutterPlugin {
             
             let endTime = Date()
             let timeInterval = endTime.timeIntervalSince(startTime)
+            guard timeInterval > 0 else {
+                result("4G")
+                return
+            }
             let speedMbps = (8.0 * Double(data?.count ?? 0)) / (timeInterval * 1_000_000.0) // Convert bytes to megabits
             
             if speedMbps > speedThreshold { // Using user-defined speed threshold
                 result("4G")
             } else {
                 result("3G or less")
+            }
+        }
+        task.resume()
+    }
+    
+    private func confirmWiFiSpeed(url: URL, speedThreshold: Double, timeoutWorkItem: DispatchWorkItem, result: @escaping FlutterResult) {
+        let startTime = Date()
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            timeoutWorkItem.cancel()
+
+            guard error == nil, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                result("WiFi")
+                return
+            }
+            
+            let endTime = Date()
+            let timeInterval = endTime.timeIntervalSince(startTime)
+            guard timeInterval > 0 else {
+                result("WiFi")
+                return
+            }
+            let speedMbps = (8.0 * Double(data?.count ?? 0)) / (timeInterval * 1_000_000.0)
+            
+            if speedMbps > speedThreshold {
+                result("WiFi")
+            } else {
+                result("WiFi (Slow)")
             }
         }
         task.resume()
